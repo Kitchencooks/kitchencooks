@@ -23,6 +23,6 @@ $( document ).ready(function() {
   function displayChatMessage(name, text) {
     $('<div/>').text(text).prepend($('<strong/>').text(name+': ')).appendTo($('.chat'));
     $('.chat')[0].scrollTop = $('.chat')[0].scrollHeight;
-  };
+  }
 
 });
