@@ -11,12 +11,19 @@
     <script src="http://repo.zebkit.org/latest/zebra.min.js"></script>
     <script src="/javascripts/zebralayout.js"></script>
     <script src = "/javascripts/chat-bar.js"></script>
+    <script src = "/javascripts/sockets.js"></script>
+    <script type='text/javascript' src="/socket.io/socket.io.js"></script>
+    <script src = "/javascripts/paper-full.min.js"></script>
+  <!--   <script type='text/javascript' src = "/javascripts/draw.js"></script> -->
+
+
+
   </head>
   <body>
     <h1>{{ title }}</h1>
     <p>Welcome to The {{ title }}</p>
 
-    {{{ chat }}}
+<!--     {{{ chat }}} -->
 
 
 
@@ -30,6 +37,6 @@
     </div> -->
 
 
-    </script>
+    <canvas id="draw" resize="true"></canvas><script type="text/paperscript" src="javascripts/draw.js" canvas="draw"></script>
   </body>
 </html>

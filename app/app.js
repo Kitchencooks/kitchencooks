@@ -56,7 +56,60 @@ app.use(function(err, req, res, next) {
     });
 });
 
-app.listen('3000');
+var server = app.listen('3000');
+var io = require('socket.io')(server);
+
+
+// A user connects to the server (opens a socket)
+io.sockets.on('connection', function (socket) {
+
+    console.log(socket.id)
+    socket.send(socket.id)
+
+    socket.on( 'drawCircle', function( data, session ) {
+        console.log('meow')
+        console.log( "session " + session + " drew:");
+        console.log( data );
+        socket.broadcast.emit( 'drawCircle', data );
+    });
+
+    // (2): The server recieves a ping event
+    // from the browser on this socket
+    socket.on('ping', function ( data ) {
+        console.log('socket: server recieves ping (2)');
+        // (3): Return a pong event to the browser
+        // echoing back the data from the ping event
+        socket.emit( 'pong', data );
+        console.log('socket: server sends pong (3)');
+
+    });
+});
+
+// io.sockets.on('startPath', function (data, id) {
+
+//     socket.on( 'drawCircle', function( data, session ) {
+//         console.log('meow')
+//         console.log( "session " + session + " drew:");
+//         console.log( data );
+//         socket.broadcast.emit( 'drawCircle', data );
+//     });
+//     // (2): The server recieves a ping event
+//     // from the browser on this socket
+//     socket.on('ping', function ( data ) {
+
+//     console.log('socket: server recieves ping (2)');
+
+//     // (3): Return a pong event to the browser
+//     // echoing back the data from the ping event
+//     socket.emit( 'pong', data );
+
+//     console.log('socket: server sends pong (3)');
+
+//     });
+// });
+
+
+
 
 
 module.exports = app;
