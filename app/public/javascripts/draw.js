@@ -1,6 +1,13 @@
 // $(document).ready(function() {
   tool.maxDistance = 50;
 
+  var sessionid;
+  io = io.connect('/');
+  io.emit('initiate')
+  io.on('transmitId', function(sessionid) {
+    sessionid = sessionid;
+  });
+
 
   // Returns an object specifying a semi-random color
   // The color will always have a red value of 0
@@ -45,11 +52,11 @@
   // This function sends the data for a circle to the server
   // so that the server can broadcast it to every other user
   function emitCircle( x, y, radius, color ) {
-    debugger
-      console.log("this is io")
-      console.log(io)
+
+
       // Each Socket.IO connection has a unique session id
-      var sessionId = io.socket.sessionid;
+      // var sessionId = sessionid;
+      // console.log(sessionI)
 
       // An object to describe the circle's draw data
       var data = {
@@ -59,8 +66,11 @@
           color: color
       };
 
-      // send a 'drawCircle' event with data and sessionId to the server
-      io.emit( 'drawCircle', data, sessionId )
+      // send a 'drawCircle' event with data and sessionid to the server
+      //sessionid comes from sockets.js
+
+      console.log(sessionid)
+      io.emit( 'drawCircle', data, sessionid );
 
       // Lets have a look at the data we're sending
       console.log( data )

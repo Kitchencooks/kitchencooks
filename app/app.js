@@ -63,11 +63,14 @@ var io = require('socket.io')(server);
 // A user connects to the server (opens a socket)
 io.sockets.on('connection', function (socket) {
 
-    console.log(socket.id)
-    socket.send(socket.id)
+    //function to establish initial connection with server, send back id to client
+    socket.on('initiate', function() {
+        socket.emit('transmitId', socket.id);
+    })
+    // socket.send(socket.id)
 
     socket.on( 'drawCircle', function( data, session ) {
-        console.log('meow')
+        console.log(session)
         console.log( "session " + session + " drew:");
         console.log( data );
         socket.broadcast.emit( 'drawCircle', data );
