@@ -55,64 +55,40 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 var server = app.listen('3000');
-var io = require('socket.io')(server);
+module.exports = app;
 
+var socket = require('socket.io');
 
-// A user connects to the server (opens a socket)
+var io = socket.listen(server);
+// SOCKET IO
+var active_connections = 0;
 io.sockets.on('connection', function (socket) {
 
-    //function to establish initial connection with server, send back id to client
-    socket.on('initiate', function() {
-        socket.emit('transmitId', socket.id);
-    })
-    // socket.send(socket.id)
+  active_connections++
 
-    socket.on( 'drawCircle', function( data, session ) {
-        console.log(session)
-        console.log( "session " + session + " drew:");
-        console.log( data );
-        socket.broadcast.emit( 'drawCircle', data );
-    });
+  io.sockets.emit('user:connect', active_connections);
 
-    // (2): The server recieves a ping event
-    // from the browser on this socket
-    socket.on('ping', function ( data ) {
-        console.log('socket: server recieves ping (2)');
-        // (3): Return a pong event to the browser
-        // echoing back the data from the ping event
-        socket.emit( 'pong', data );
-        console.log('socket: server sends pong (3)');
+  socket.on('disconnect', function () {
+    active_connections--
+    io.sockets.emit('user:disconnect', active_connections);
+  });
 
-    });
+  // EVENT: User stops drawing something
+  socket.on('draw:progress', function (uid, co_ordinates) {
+
+    io.sockets.emit('draw:progress', uid, co_ordinates)
+
+  });
+
+  // EVENT: User stops drawing something
+  socket.on('draw:end', function (uid, co_ordinates) {
+
+    io.sockets.emit('draw:end', uid, co_ordinates)
+
+  });
+
 });
 
-// io.sockets.on('startPath', function (data, id) {
-
-//     socket.on( 'drawCircle', function( data, session ) {
-//         console.log('meow')
-//         console.log( "session " + session + " drew:");
-//         console.log( data );
-//         socket.broadcast.emit( 'drawCircle', data );
-//     });
-//     // (2): The server recieves a ping event
-//     // from the browser on this socket
-//     socket.on('ping', function ( data ) {
-
-//     console.log('socket: server recieves ping (2)');
-
-//     // (3): Return a pong event to the browser
-//     // echoing back the data from the ping event
-//     socket.emit( 'pong', data );
-
-//     console.log('socket: server sends pong (3)');
-
-//     });
-// });
 
 
-
-
-
-module.exports = app;
