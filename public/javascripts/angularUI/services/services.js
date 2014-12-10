@@ -12,7 +12,7 @@ angular.module('kitchenApp.services', [])
     console.log("in login")
     return $http({
       method: 'GET',
-      url: '/auth/github'
+      url: 'localhost:3000/auth/github'
     // xhrFields: {
 
     //    'withCredentials': true},

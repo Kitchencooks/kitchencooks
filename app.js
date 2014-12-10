@@ -18,26 +18,9 @@ var session = require('express-session');
 var GITHUB_CLIENT_ID = "9fc53664e3f5cda07061";
 var GITHUB_CLIENT_SECRET = "a6549bd7252dc4405d50f908a7c170f53ddaf0fa";
 
-var routes = require('./routes/index');
+// var routes = require('./routes/index');
 
 var app = express();
-// app.use(cors());
-
-// app.use(function(req, res, next) {
-//   res.header('Access-Control-Allow-Credentials', true);
-//   res.header('Access-Control-Allow-Origin', req.headers.origin);
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//   res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-//   if ('OPTIONS' == req.method) {
-//        res.send(200);
-//    } else {
-//        next();
-//    }
-// });
-
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'hjs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -55,7 +38,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', routes);
+// app.use('/', routes);
 
 // GitHub config, this callback should match callback in api
 passport.use(new GitHubStrategy({
