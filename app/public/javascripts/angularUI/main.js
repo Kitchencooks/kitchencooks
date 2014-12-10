@@ -7,7 +7,8 @@ var fbSeating = new Firebase('https://hrr-kitchen.firebaseio.com/seating');
 var kitchenApp = angular.module('kitchenApp', [
   'ui.bootstrap',
   'ngRoute',
-  'appControllers'
+  'appControllers',
+  'kitchenApp.services'
   ],
 
   function($interpolateProvider) {
@@ -27,6 +28,8 @@ kitchenApp.config(['$routeProvider',
         redirectTo: '/index'
       });
   }]);
+
+
 
 
 

@@ -10,6 +10,9 @@ var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var session = require('express-session');
 
+// var cors = require('cors')
+
+
 // get a github api client_id and client_secret
 // can find them here: https://github.com/organizations/Kitchencooks/settings/applications/150833
 var GITHUB_CLIENT_ID = "9fc53664e3f5cda07061";
@@ -18,10 +21,23 @@ var GITHUB_CLIENT_SECRET = "a6549bd7252dc4405d50f908a7c170f53ddaf0fa";
 var routes = require('./routes/index');
 
 var app = express();
+// app.use(cors());
+
+// app.use(function(req, res, next) {
+//   res.header('Access-Control-Allow-Credentials', true);
+//   res.header('Access-Control-Allow-Origin', req.headers.origin);
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//   res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+//   if ('OPTIONS' == req.method) {
+//        res.send(200);
+//    } else {
+//        next();
+//    }
+// });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hjs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'hjs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -79,15 +95,22 @@ app.get('/login', function(req, res){
 app.get('/auth/github',
   passport.authenticate('github'),
   function(req, res){
+    // res.setHeader("Access-Control-Allow-Origin", "*");
+
     // The request will be redirected to GitHub for authentication,
     // so this function will not be called.
   });
 
-app.get('/auth/github/callback', 
+app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/' }),
   function(req, res) {
+    // req.setHeader("Access-Control-Allow-Origin", "*");
+
+    console.log("in callback")
+    var user = req.session.passport.user;
     console.log('req.session.passport.user: ', req.session.passport.user);
-    res.redirect('/');
+    res.json(user);
+    // res.redirect('/');
   });
 
 // catch 404 and forward to error handler
@@ -122,5 +145,5 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen('3000');
-
+// app.use(cors())
 module.exports = app;
